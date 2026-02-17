@@ -36,7 +36,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         btnIniciarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(600, 800));
         setSize(new java.awt.Dimension(0, 0));
 
         panelFondo.setBackground(new java.awt.Color(153, 255, 204));
@@ -55,7 +55,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         labelUsuario.setForeground(new java.awt.Color(102, 102, 255));
         labelUsuario.setText("Ingresa tu usuario:");
         labelUsuario.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        PanelFormulario.add(labelUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 60, 240, 90));
+        PanelFormulario.add(labelUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 240, 90));
 
         textfieldUsuario.setBackground(new java.awt.Color(102, 255, 153));
         textfieldUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -65,16 +65,16 @@ public class IniciarSesion extends javax.swing.JFrame {
                 textfieldUsuarioActionPerformed(evt);
             }
         });
-        PanelFormulario.add(textfieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, 210, -1));
+        PanelFormulario.add(textfieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 210, -1));
 
         labelContra.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         labelContra.setForeground(new java.awt.Color(102, 102, 255));
         labelContra.setText("Ingresa tu contraseña:");
-        PanelFormulario.add(labelContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 190, -1, -1));
+        PanelFormulario.add(labelContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, -1, -1));
 
         passfieldContra.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         passfieldContra.setForeground(new java.awt.Color(102, 102, 255));
-        PanelFormulario.add(passfieldContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, 210, -1));
+        PanelFormulario.add(passfieldContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 210, -1));
 
         btnIniciarSesion.setBackground(new java.awt.Color(153, 255, 153));
         btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -85,13 +85,13 @@ public class IniciarSesion extends javax.swing.JFrame {
                 btnIniciarSesionActionPerformed(evt);
             }
         });
-        PanelFormulario.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 300, -1, -1));
+        PanelFormulario.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, -1, -1));
 
         panelFondo.add(PanelFormulario, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panelFondo, java.awt.BorderLayout.CENTER);
 
-        pack();
+        setBounds(0, 0, 820, 617);
     }// </editor-fold>//GEN-END:initComponents
 
     private void textfieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldUsuarioActionPerformed
