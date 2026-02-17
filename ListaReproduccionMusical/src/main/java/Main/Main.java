@@ -6,6 +6,7 @@
 package Main;
 
 import Interfaz.IniciarSesion;
+import Interfaz.Reproductor;
 
 /**
  *
@@ -19,6 +20,9 @@ public class Main {
     public static void main(String[] args) {
         IniciarSesion iniciarSesion = new IniciarSesion();
         iniciarSesion.setVisible(true);
+        
+        Reproductor player = new Reproductor();
+        player.setVisible(true);
     }
 
 }
