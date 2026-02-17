@@ -22,6 +22,11 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(String usuario, String contrasenia) {
+        this.usuario = usuario;
+        this.contrasenia = contrasenia;
+    }
+
     public Usuario(String usuario, String contrasenia, List<ListaReproduccion> listaReproduccion) {
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -50,6 +55,11 @@ public class Usuario {
 
     public void setListaReproduccion(List<ListaReproduccion> listaReproduccion) {
         this.listaReproduccion = listaReproduccion;
+    }
+
+    //Metodos
+    public boolean validarUsuario(String usuario, String contra) {
+        return this.usuario.equals(usuario) && this.contrasenia.equals(contra);
     }
 
 }
