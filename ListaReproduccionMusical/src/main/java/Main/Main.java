@@ -2,11 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-
 package Main;
 
 import Interfaz.IniciarSesion;
-import Interfaz.Reproductor;
 
 /**
  *
@@ -20,9 +18,7 @@ public class Main {
     public static void main(String[] args) {
         IniciarSesion iniciarSesion = new IniciarSesion();
         iniciarSesion.setVisible(true);
-        
-        Reproductor player = new Reproductor();
-        player.setVisible(true);
+
     }
 
 }

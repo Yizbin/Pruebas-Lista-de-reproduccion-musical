@@ -17,9 +17,6 @@ public class ListaUsuarios {
     private static final List<Usuario> usuariosRegistrados = new ArrayList<>();
 
     public ListaUsuarios() {
-    }
-
-    public ListaUsuarios(List<Usuario> usuariosRegistrados) {
         if (usuariosRegistrados.isEmpty()) {
             cargarUsuarios();
         }
