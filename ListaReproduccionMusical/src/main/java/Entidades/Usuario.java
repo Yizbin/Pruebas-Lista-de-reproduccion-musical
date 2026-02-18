@@ -62,4 +62,11 @@ public class Usuario {
         return this.usuario.equals(usuario) && this.contrasenia.equals(contra);
     }
 
+    public void agregarListaReproduccion(ListaReproduccion nuevaLista) {
+        if (this.listaReproduccion == null) {
+            this.listaReproduccion = new ArrayList<>();
+        }
+        this.listaReproduccion.add(nuevaLista);
+    }
+
 }

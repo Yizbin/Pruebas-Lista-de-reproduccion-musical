@@ -25,6 +25,11 @@ public class ListaReproduccion {
         this.listaCanciones = new ArrayList<>();
     }
 
+    public ListaReproduccion(String nombreLista) {
+        this.nombreLista = nombreLista;
+        this.listaCanciones = new ArrayList<>();
+    }
+
     public String getNombreLista() {
         return nombreLista;
     }

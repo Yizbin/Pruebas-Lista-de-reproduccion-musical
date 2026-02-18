@@ -1,24 +1,37 @@
 package Interfaz;
 
+import Entidades.ListaReproduccion;
+import Entidades.Usuario;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-
 import java.awt.BorderLayout;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioInputStream;
+import java.io.File;
 
 /**
  *
  * @author NetoLpz05
  */
-
 public class Reproductor extends JFrame {
 
-    private JSlider progreso;
-    private JSlider volumen;
-    private JButton btnPlay;
+    private final JSlider progreso;
+    private final JSlider volumen;
+    private final JButton btnPlay;
 
-    public Reproductor() {
-        setTitle("Reproductor de Música");
+    private final Usuario usuarioActual;
+
+    private final DefaultListModel<String> modeloLista;
+    private final JList<String> lista;
+    private final JComboBox<String> comboListas;
+
+    private Clip clip; // Objeto nativo de Java para reproducir audio
+
+    public Reproductor(Usuario usuarioActual) {
+        this.usuarioActual = usuarioActual;
+        setTitle("Reproductor de Musica de: " + usuarioActual.getUsuario());
         setSize(1920, 1080);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -109,23 +122,70 @@ public class Reproductor extends JFrame {
 
         mainPanel.add(panelCentro, BorderLayout.CENTER);
 
-        // LISTA DE REPRODUCCIÓN
-        DefaultListModel<String> modeloLista = new DefaultListModel<>();
-        modeloLista.addElement("Canción 1");
-        modeloLista.addElement("Canción 2");
-        modeloLista.addElement("Canción 3");
-        modeloLista.addElement("Canción 4");
+        JPanel panelDerecho = new JPanel(new BorderLayout());
+        panelDerecho.setBackground(new Color(30, 30, 30));
 
-        JList<String> lista = new JList<>(modeloLista);
+        comboListas = new JComboBox<>();
+        comboListas.setBackground(new Color(50, 50, 50));
+        comboListas.setForeground(Color.WHITE);
+        comboListas.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+        comboListas.addActionListener(e -> cargarCancionesDeListaSeleccionada());
+
+        panelDerecho.add(comboListas, BorderLayout.NORTH);
+
+        modeloLista = new DefaultListModel<>();
+
+        // INICIALIZAMOS LA LISTA GLOBAL
+        lista = new JList<>(modeloLista);
         lista.setBackground(new Color(45, 45, 45));
         lista.setForeground(Color.WHITE);
         lista.setSelectionBackground(new Color(0, 200, 120));
         lista.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
+        lista.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) { // Si es doble clic
+                    reproducirCancionSeleccionada();
+                }
+            }
+        });
+
         JScrollPane scroll = new JScrollPane(lista);
         scroll.setPreferredSize(new Dimension(200, 0));
 
-        mainPanel.add(scroll, BorderLayout.EAST);
+        panelDerecho.add(scroll, BorderLayout.CENTER);
+
+        // PANEL PARA LOS BOTONES INFERIORES
+        JPanel panelBotonesDerecho = new JPanel(new GridLayout(2, 1, 5, 5));
+        panelBotonesDerecho.setBackground(new Color(30, 30, 30));
+
+        // BOTÓN 1: CREAR LISTA
+        JButton btnCrearLista = new JButton("➕ Crear Nueva Lista");
+        btnCrearLista.setFocusPainted(false);
+        btnCrearLista.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnCrearLista.setForeground(Color.WHITE);
+        btnCrearLista.setBackground(new Color(0, 150, 90));
+        btnCrearLista.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnCrearLista.addActionListener(e -> crearListaInteractivo());
+
+        // BOTÓN 2: AGREGAR CANCIÓN
+        JButton btnAgregarCancion = new JButton("🎵 Agregar Canción");
+        btnAgregarCancion.setFocusPainted(false);
+        btnAgregarCancion.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnAgregarCancion.setForeground(Color.WHITE);
+        btnAgregarCancion.setBackground(new Color(70, 130, 180));
+        btnAgregarCancion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAgregarCancion.addActionListener(e -> agregarCancionArchivo());
+
+        panelBotonesDerecho.add(btnCrearLista);
+        panelBotonesDerecho.add(btnAgregarCancion);
+
+        // Lo agregamos en la parte de abajo (SOUTH)
+        panelDerecho.add(panelBotonesDerecho, BorderLayout.SOUTH);
+
+        mainPanel.add(panelDerecho, BorderLayout.EAST);
     }
 
     //Método para crear botones
@@ -142,11 +202,125 @@ public class Reproductor extends JFrame {
 
     //Cambia entre Play y Pause
     private void togglePlay() {
-        if (btnPlay.getText().equals("▶")) {
-            btnPlay.setText("⏸");
-        } else {
+        if (clip == null || !clip.isOpen()) {
+            reproducirCancionSeleccionada();
+            return;
+        }
+
+        if (clip.isRunning()) {
+            clip.stop();
             btnPlay.setText("▶");
+        } else {
+            clip.start();
+            btnPlay.setText("⏸");
+        }
+    }
+
+    private void crearListaInteractivo() {
+        String nombreLista = JOptionPane.showInputDialog(
+                this,
+                "Ingresa el nombre de la nueva lista:",
+                "Crear Lista de Reproducción",
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (nombreLista != null && !nombreLista.trim().isEmpty()) {
+
+            ListaReproduccion nuevaLista = new ListaReproduccion(nombreLista);
+            usuarioActual.agregarListaReproduccion(nuevaLista);
+
+            // --- NUEVO: Agregamos el nombre visualmente al ComboBox ---
+            comboListas.addItem(nombreLista);
+
+            // Si es la primera lista que creas, la seleccionamos automáticamente
+            if (comboListas.getItemCount() == 1) {
+                comboListas.setSelectedIndex(0);
+            }
+
+            JOptionPane.showMessageDialog(this, "Lista '" + nombreLista + "' creada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    // Método que se activa al elegir una lista diferente en el ComboBox
+    private void cargarCancionesDeListaSeleccionada() {
+        int index = comboListas.getSelectedIndex();
+        if (index != -1) { // Verifica que haya una lista seleccionada
+            ListaReproduccion listaSeleccionada = usuarioActual.getListaReproduccion().get(index);
+            actualizarListaVisual(listaSeleccionada);
+        }
+    }
+
+    private void agregarCancionArchivo() {
+        int index = comboListas.getSelectedIndex();
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Primero debes crear y seleccionar una Lista de Reproducción.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        ListaReproduccion listaActiva = usuarioActual.getListaReproduccion().get(index);
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar Canción");
+
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos de Audio WAV (*.wav)", "wav"));
+
+        int seleccion = fileChooser.showOpenDialog(this);
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            java.io.File archivoSeleccionado = fileChooser.getSelectedFile();
+
+            Entidades.Cancion nuevaCancion = new Entidades.Cancion(
+                    archivoSeleccionado,
+                    archivoSeleccionado.getName(),
+                    "Desconocido",
+                    0,
+                    null
+            );
+
+            listaActiva.agregarCancion(nuevaCancion);
+
+            actualizarListaVisual(listaActiva);
+        }
+    }
+
+    private void actualizarListaVisual(ListaReproduccion listaActiva) {
+        modeloLista.clear();
+
+        for (Entidades.Cancion c : listaActiva.getListaCanciones()) {
+            modeloLista.addElement(c.getTitulo());
+        }
+    }
+
+    private void reproducirCancionSeleccionada() {
+        int indexCancion = lista.getSelectedIndex();
+        int indexLista = comboListas.getSelectedIndex();
+
+        if (indexLista == -1 || indexCancion == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona una lista y una canción para reproducir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            ListaReproduccion listaActiva = usuarioActual.getListaReproduccion().get(indexLista);
+            Entidades.Cancion cancionActual = listaActiva.getListaCanciones().get(indexCancion);
+            File archivoAudio = cancionActual.getArchivo();
+
+            if (clip != null && clip.isRunning()) {
+                clip.stop();
+                clip.close();
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(archivoAudio);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+
+            btnPlay.setText("⏸");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al reproducir el audio. Asegúrate de que sea un archivo .wav válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
     }
 }
-

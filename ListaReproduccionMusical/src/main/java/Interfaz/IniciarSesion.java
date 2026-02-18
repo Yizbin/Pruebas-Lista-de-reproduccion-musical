@@ -30,12 +30,14 @@ public class IniciarSesion extends javax.swing.JFrame {
         String usuarioIngresado = this.textfieldUsuario.getText();
         char[] arrayContra = this.passfieldContra.getPassword();
         String contraIngresada = new String(arrayContra);
-        
+
         Usuario usuarioEncontrado = listaUsuarios.buscarUsuario(usuarioIngresado, contraIngresada);
-        
+
         if (usuarioEncontrado != null) {
             JOptionPane.showMessageDialog(this, "Bienvenido: " + usuarioIngresado);
-            //Aqui seria abrir la otra ventana
+            Reproductor ventanaReproductor = new Reproductor(usuarioEncontrado);
+            ventanaReproductor.setVisible(true);
+            this.dispose(); 
         } else {
             JOptionPane.showMessageDialog(this, "Erro: Usuario o contraseña incorrectos, ingreselos de nuevo");
         }
