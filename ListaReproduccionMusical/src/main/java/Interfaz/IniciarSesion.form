@@ -35,7 +35,7 @@
     <Container class="javax.swing.JPanel" name="panelFondo">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="66" green="66" red="66" type="rgb"/>
+          <Color blue="f" green="f" red="f" type="rgb"/>
         </Property>
       </Properties>
       <Constraints>
@@ -52,7 +52,7 @@
               <Font name="Segoe UI" size="24" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="66" green="66" red="ff" type="rgb"/>
+              <Color blue="e2" green="2b" red="8a" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Iniciar Sesion"/>
@@ -83,7 +83,7 @@
                   <Font name="Segoe UI" size="24" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="66" red="ff" type="rgb"/>
+                  <Color blue="2b" green="71" red="e2" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ingresa tu usuario:"/>
                 <Property name="horizontalTextPosition" type="int" value="4"/>
@@ -103,7 +103,7 @@
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="66" red="ff" type="rgb"/>
+                  <Color blue="e2" green="2b" red="8a" type="rgb"/>
                 </Property>
               </Properties>
               <Events>
@@ -121,7 +121,7 @@
                   <Font name="Segoe UI" size="24" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="66" red="ff" type="rgb"/>
+                  <Color blue="2b" green="71" red="e2" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ingresa tu contrase&#xf1;a:"/>
               </Properties>
@@ -137,7 +137,7 @@
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="66" red="ff" type="rgb"/>
+                  <Color blue="e2" green="2b" red="8a" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -155,7 +155,7 @@
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="66" red="ff" type="rgb"/>
+                  <Color blue="e2" green="2b" red="8a" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Iniciar sesion"/>
               </Properties>

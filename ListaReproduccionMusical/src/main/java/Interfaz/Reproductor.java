@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioInputStream;
 import java.io.File;
+import javax.sound.sampled.FloatControl;
 
 /**
  *
@@ -27,7 +28,11 @@ public class Reproductor extends JFrame {
     private final JList<String> lista;
     private final JComboBox<String> comboListas;
 
+    private final JLabel lblTitulo;
+    private final JLabel lblArtista;
+
     private Clip clip; // Objeto nativo de Java para reproducir audio
+    private Timer timerProgreso;
 
     public Reproductor(Usuario usuarioActual) {
         this.usuarioActual = usuarioActual;
@@ -40,19 +45,19 @@ public class Reproductor extends JFrame {
 
         //PANEL PRINCIPAL
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(30, 30, 30));
+        mainPanel.setBackground(new Color(15, 15, 15));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         add(mainPanel);
 
         //PANEL IZQUIERDO (CARÁTULA)
         JPanel panelAlbum = new JPanel();
-        panelAlbum.setBackground(new Color(30, 30, 30));
+        panelAlbum.setBackground(new Color(15, 15, 15));
         panelAlbum.setLayout(new BorderLayout());
 
         JLabel albumArt = new JLabel();
         albumArt.setPreferredSize(new Dimension(300, 300));
         albumArt.setOpaque(true);
-        albumArt.setBackground(new Color(60, 60, 60));
+        albumArt.setBackground(new Color(30, 30, 30));
         albumArt.setHorizontalAlignment(SwingConstants.CENTER);
         albumArt.setText("Arte del Album");
         albumArt.setForeground(Color.WHITE);
@@ -62,35 +67,55 @@ public class Reproductor extends JFrame {
 
         //PANEL CENTRO (INFO + CONTROLES)
         JPanel panelCentro = new JPanel();
-        panelCentro.setBackground(new Color(30, 30, 30));
+        panelCentro.setBackground(new Color(15, 15, 15));
         panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
-        panelCentro.setBorder(new EmptyBorder(20, 30, 20, 30));
+        panelCentro.setBorder(new EmptyBorder(40, 30, 20, 30));
 
-        JLabel lblTitulo = new JLabel("Nombre de la Canción");
+        // INICIALIZAMOS GLOBALES 
+        lblTitulo = new JLabel("Selecciona una pista");
         lblTitulo.setForeground(Color.WHITE);
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblTitulo.setFont(new Font("Honoka Mincho", Font.BOLD, 32));
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel lblArtista = new JLabel("Artista");
-        lblArtista.setForeground(Color.LIGHT_GRAY);
-        lblArtista.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        lblArtista = new JLabel("Artista");
+        lblArtista.setForeground(new Color(138, 43, 226)); // Morado
+        lblArtista.setFont(new Font("Honoka Mincho", Font.PLAIN, 20));
+        lblArtista.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panelCentro.add(lblTitulo);
-        panelCentro.add(Box.createVerticalStrut(5));
+        panelCentro.add(Box.createVerticalStrut(10));
         panelCentro.add(lblArtista);
+        panelCentro.add(Box.createVerticalStrut(50));
+
+        // Barra de progreso envuelta para no estirarse
+        JPanel panelProgreso = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelProgreso.setBackground(new Color(15, 15, 15));
+
+        progreso = new JSlider();
+        progreso.setValue(0);
+        progreso.setPreferredSize(new Dimension(600, 40));
+        progreso.setBackground(new Color(15, 15, 15));
+        progreso.setForeground(new Color(138, 43, 226)); // Morado
+        timerProgreso = new Timer(100, e -> actualizarBarraProgreso());
+
+        progreso.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                if (clip != null && clip.isOpen()) {
+                    long longitudTotal = clip.getMicrosecondLength();
+                    long nuevaPosicion = (progreso.getValue() * longitudTotal) / 100;
+                    clip.setMicrosecondPosition(nuevaPosicion);
+                }
+            }
+        });
+        panelProgreso.add(progreso);
+
+        panelCentro.add(panelProgreso);
         panelCentro.add(Box.createVerticalStrut(30));
 
-        //Barra de progreso
-        progreso = new JSlider();
-        progreso.setValue(30);
-        progreso.setBackground(new Color(30, 30, 30));
-        progreso.setForeground(new Color(0, 200, 120));
-        panelCentro.add(progreso);
-
-        panelCentro.add(Box.createVerticalStrut(25));
-
         //BOTONES DE CONTROL
-        JPanel panelBotones = new JPanel();
-        panelBotones.setBackground(new Color(30, 30, 30));
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        panelBotones.setBackground(new Color(15, 15, 15));
 
         JButton btnPrev = crearBoton("⏮");
         btnPlay = crearBoton("▶");
@@ -103,33 +128,38 @@ public class Reproductor extends JFrame {
         panelBotones.add(btnNext);
 
         panelCentro.add(panelBotones);
-        panelCentro.add(Box.createVerticalStrut(25));
+        panelCentro.add(Box.createVerticalStrut(30));
 
-        //VOLUMEN
-        JPanel panelVolumen = new JPanel(new BorderLayout());
-        panelVolumen.setBackground(new Color(30, 30, 30));
+        // VOLUMEN envuelto para no estirarse
+        JPanel panelVolumen = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelVolumen.setBackground(new Color(15, 15, 15));
 
         JLabel lblVol = new JLabel("Volumen");
         lblVol.setForeground(Color.WHITE);
+        lblVol.setFont(new Font("Honoka Mincho", Font.BOLD, 14));
 
         volumen = new JSlider(0, 100, 70);
-        volumen.setBackground(new Color(30, 30, 30));
+        volumen.setPreferredSize(new Dimension(200, 40));
+        volumen.setBackground(new Color(15, 15, 15));
 
-        panelVolumen.add(lblVol, BorderLayout.WEST);
-        panelVolumen.add(volumen, BorderLayout.CENTER);
+        // Listener del volumen
+        volumen.addChangeListener(e -> actualizarVolumen());
+
+        panelVolumen.add(lblVol);
+        panelVolumen.add(volumen);
 
         panelCentro.add(panelVolumen);
 
         mainPanel.add(panelCentro, BorderLayout.CENTER);
 
+        // ------------------ PANEL DERECHO (LISTAS Y CANCIONES) ------------------
         JPanel panelDerecho = new JPanel(new BorderLayout());
-        panelDerecho.setBackground(new Color(30, 30, 30));
+        panelDerecho.setBackground(new Color(15, 15, 15));
 
         comboListas = new JComboBox<>();
-        comboListas.setBackground(new Color(50, 50, 50));
+        comboListas.setBackground(new Color(30, 30, 30));
         comboListas.setForeground(Color.WHITE);
-        comboListas.setFont(new Font("Segoe UI", Font.BOLD, 14));
-
+        comboListas.setFont(new Font("Honoka Mincho", Font.BOLD, 14));
         comboListas.addActionListener(e -> cargarCancionesDeListaSeleccionada());
 
         panelDerecho.add(comboListas, BorderLayout.NORTH);
@@ -138,10 +168,10 @@ public class Reproductor extends JFrame {
 
         // INICIALIZAMOS LA LISTA GLOBAL
         lista = new JList<>(modeloLista);
-        lista.setBackground(new Color(45, 45, 45));
+        lista.setBackground(new Color(20, 20, 20)); // Gris oscuro
         lista.setForeground(Color.WHITE);
-        lista.setSelectionBackground(new Color(0, 200, 120));
-        lista.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lista.setSelectionBackground(new Color(106, 13, 173)); // Morado de selección
+        lista.setFont(new Font("Honoka Mincho", Font.PLAIN, 14));
 
         lista.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -153,29 +183,31 @@ public class Reproductor extends JFrame {
         });
 
         JScrollPane scroll = new JScrollPane(lista);
-        scroll.setPreferredSize(new Dimension(200, 0));
+        scroll.setPreferredSize(new Dimension(250, 0));
+        scroll.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Margen interior
 
         panelDerecho.add(scroll, BorderLayout.CENTER);
 
         // PANEL PARA LOS BOTONES INFERIORES
-        JPanel panelBotonesDerecho = new JPanel(new GridLayout(2, 1, 5, 5));
-        panelBotonesDerecho.setBackground(new Color(30, 30, 30));
+        JPanel panelBotonesDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
+        panelBotonesDerecho.setBackground(new Color(15, 15, 15));
+        panelBotonesDerecho.setBorder(new EmptyBorder(10, 0, 0, 0));
 
-        // BOTÓN 1: CREAR LISTA
+        // BOTÓN 1: CREAR LISTA (Dorado/Ascua)
         JButton btnCrearLista = new JButton("➕ Crear Nueva Lista");
         btnCrearLista.setFocusPainted(false);
-        btnCrearLista.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnCrearLista.setFont(new Font("Honoka Mincho", Font.BOLD, 14));
         btnCrearLista.setForeground(Color.WHITE);
-        btnCrearLista.setBackground(new Color(0, 150, 90));
+        btnCrearLista.setBackground(new Color(226, 113, 43)); // Ascua
         btnCrearLista.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCrearLista.addActionListener(e -> crearListaInteractivo());
 
-        // BOTÓN 2: AGREGAR CANCIÓN
+        // BOTÓN 2: AGREGAR CANCIÓN (Morado)
         JButton btnAgregarCancion = new JButton("🎵 Agregar Canción");
         btnAgregarCancion.setFocusPainted(false);
-        btnAgregarCancion.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnAgregarCancion.setFont(new Font("Honoka Mincho", Font.BOLD, 14));
         btnAgregarCancion.setForeground(Color.WHITE);
-        btnAgregarCancion.setBackground(new Color(70, 130, 180));
+        btnAgregarCancion.setBackground(new Color(138, 43, 226)); // Morado
         btnAgregarCancion.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnAgregarCancion.addActionListener(e -> agregarCancionArchivo());
 
@@ -210,9 +242,11 @@ public class Reproductor extends JFrame {
         if (clip.isRunning()) {
             clip.stop();
             btnPlay.setText("▶");
+            timerProgreso.stop(); // <- PAUSAR RELOJ
         } else {
             clip.start();
             btnPlay.setText("⏸");
+            timerProgreso.start(); // <- REANUDAR RELOJ
         }
     }
 
@@ -229,10 +263,8 @@ public class Reproductor extends JFrame {
             ListaReproduccion nuevaLista = new ListaReproduccion(nombreLista);
             usuarioActual.agregarListaReproduccion(nuevaLista);
 
-            // --- NUEVO: Agregamos el nombre visualmente al ComboBox ---
             comboListas.addItem(nombreLista);
 
-            // Si es la primera lista que creas, la seleccionamos automáticamente
             if (comboListas.getItemCount() == 1) {
                 comboListas.setSelectedIndex(0);
             }
@@ -241,10 +273,9 @@ public class Reproductor extends JFrame {
         }
     }
 
-    // Método que se activa al elegir una lista diferente en el ComboBox
     private void cargarCancionesDeListaSeleccionada() {
         int index = comboListas.getSelectedIndex();
-        if (index != -1) { // Verifica que haya una lista seleccionada
+        if (index != -1) {
             ListaReproduccion listaSeleccionada = usuarioActual.getListaReproduccion().get(index);
             actualizarListaVisual(listaSeleccionada);
         }
@@ -316,11 +347,43 @@ public class Reproductor extends JFrame {
             clip.open(audioStream);
             clip.start();
 
+            clip.start();
+
             btnPlay.setText("⏸");
+            timerProgreso.start();
+
+            lblTitulo.setText(cancionActual.getTitulo());
+            lblArtista.setText(cancionActual.getArtista());
+            actualizarVolumen();
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al reproducir el audio. Asegúrate de que sea un archivo .wav válido.", "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
+        }
+    }
+
+    private void actualizarVolumen() {
+        if (clip != null && clip.isOpen()) {
+            try {
+                FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float vol = volumen.getValue() / 100f;
+                float db = (vol == 0.0f) ? -80.0f : (float) (Math.log10(vol) * 20f);
+                control.setValue(db);
+            } catch (IllegalArgumentException ex) {
+                System.out.println("No soporta control de volumen maestro.");
+            }
+        }
+    }
+
+    private void actualizarBarraProgreso() {
+        if (clip != null && clip.isRunning() && !progreso.getValueIsAdjusting()) {
+            long posicionActual = clip.getMicrosecondPosition();
+            long longitudTotal = clip.getMicrosecondLength();
+
+            if (longitudTotal > 0) {
+                int porcentaje = (int) ((posicionActual * 100) / longitudTotal);
+                progreso.setValue(porcentaje);
+            }
         }
     }
 }

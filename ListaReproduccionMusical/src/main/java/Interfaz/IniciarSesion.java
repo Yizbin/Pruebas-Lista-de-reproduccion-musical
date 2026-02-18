@@ -60,11 +60,11 @@ public class IniciarSesion extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(600, 800));
         setSize(new java.awt.Dimension(0, 0));
 
-        panelFondo.setBackground(new java.awt.Color(102, 102, 102));
+        panelFondo.setBackground(new java.awt.Color(15, 15, 15));
         panelFondo.setLayout(new java.awt.BorderLayout());
 
         Titulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        Titulo.setForeground(new java.awt.Color(255, 102, 102));
+        Titulo.setForeground(new java.awt.Color(138, 43, 226));
         Titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Titulo.setText("Iniciar Sesion");
         panelFondo.add(Titulo, java.awt.BorderLayout.PAGE_START);
@@ -73,14 +73,14 @@ public class IniciarSesion extends javax.swing.JFrame {
         PanelFormulario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelUsuario.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        labelUsuario.setForeground(new java.awt.Color(255, 102, 102));
+        labelUsuario.setForeground(new java.awt.Color(226, 113, 43));
         labelUsuario.setText("Ingresa tu usuario:");
         labelUsuario.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         PanelFormulario.add(labelUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 240, 90));
 
         textfieldUsuario.setBackground(new java.awt.Color(153, 153, 153));
         textfieldUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        textfieldUsuario.setForeground(new java.awt.Color(255, 102, 102));
+        textfieldUsuario.setForeground(new java.awt.Color(138, 43, 226));
         textfieldUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textfieldUsuarioActionPerformed(evt);
@@ -89,17 +89,17 @@ public class IniciarSesion extends javax.swing.JFrame {
         PanelFormulario.add(textfieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 210, -1));
 
         labelContra.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        labelContra.setForeground(new java.awt.Color(255, 102, 102));
+        labelContra.setForeground(new java.awt.Color(226, 113, 43));
         labelContra.setText("Ingresa tu contraseña:");
         PanelFormulario.add(labelContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, -1, -1));
 
         passfieldContra.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        passfieldContra.setForeground(new java.awt.Color(255, 102, 102));
+        passfieldContra.setForeground(new java.awt.Color(138, 43, 226));
         PanelFormulario.add(passfieldContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 210, -1));
 
         btnIniciarSesion.setBackground(new java.awt.Color(153, 153, 153));
         btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnIniciarSesion.setForeground(new java.awt.Color(255, 102, 102));
+        btnIniciarSesion.setForeground(new java.awt.Color(138, 43, 226));
         btnIniciarSesion.setText("Iniciar sesion");
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
