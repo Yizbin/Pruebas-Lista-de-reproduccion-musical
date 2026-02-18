@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Entidades;
+
+import java.io.File;
 
 /**
  *
@@ -10,22 +8,26 @@ package Entidades;
  */
 public class Cancion {
 
+    private File archivo;
     private String titulo;
-
     private String artista;
+    private long duracion;
+    private byte[] caratula;
 
-    private String rutaArchivo;
-
-    private int duracion;
-
-    public Cancion() {
-    }
-
-    public Cancion(String titulo, String artista, String rutaArchivo, int duracion) {
+    public Cancion(File archivo, String titulo, String artista, long duracion, byte[] caratula) {
+        this.archivo = archivo;
         this.titulo = titulo;
         this.artista = artista;
-        this.rutaArchivo = rutaArchivo;
         this.duracion = duracion;
+        this.caratula = caratula;
+    }
+
+    public File getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(File archivo) {
+        this.archivo = archivo;
     }
 
     public String getTitulo() {
@@ -44,28 +46,24 @@ public class Cancion {
         this.artista = artista;
     }
 
-    public String getRutaArchivo() {
-        return rutaArchivo;
-    }
-
-    public void setRutaArchivo(String rutaArchivo) {
-        this.rutaArchivo = rutaArchivo;
-    }
-
-    public int getDuracion() {
+    public long getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(int duracion) {
+    public void setDuracion(long duracion) {
         this.duracion = duracion;
     }
 
-    //Metodos
-    public String getDuracionMinutos() {
-        int minutos = duracion / 60;
-        int segundos = duracion % 60;
-
-        return String.format("%02d:%02d", minutos, segundos);
+    public byte[] getCaratula() {
+        return caratula;
     }
 
+    public void setCaratula(byte[] caratula) {
+        this.caratula = caratula;
+    }
+
+    @Override
+    public String toString() {
+        return titulo + " - " + artista;
+    }
 }
