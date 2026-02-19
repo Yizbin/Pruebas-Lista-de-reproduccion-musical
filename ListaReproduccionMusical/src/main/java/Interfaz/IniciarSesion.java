@@ -37,7 +37,7 @@ public class IniciarSesion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Bienvenido: " + usuarioIngresado);
             Reproductor ventanaReproductor = new Reproductor(usuarioEncontrado);
             ventanaReproductor.setVisible(true);
-            this.dispose(); 
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Erro: Usuario o contraseña incorrectos, ingreselos de nuevo");
         }
@@ -55,6 +55,7 @@ public class IniciarSesion extends javax.swing.JFrame {
         labelContra = new javax.swing.JLabel();
         passfieldContra = new javax.swing.JPasswordField();
         btnIniciarSesion = new javax.swing.JButton();
+        btnRegistrarse = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(600, 800));
@@ -108,6 +109,17 @@ public class IniciarSesion extends javax.swing.JFrame {
         });
         PanelFormulario.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, -1, -1));
 
+        btnRegistrarse.setBackground(new java.awt.Color(153, 153, 153));
+        btnRegistrarse.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnRegistrarse.setForeground(new java.awt.Color(138, 43, 226));
+        btnRegistrarse.setText("Registrarse");
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarseActionPerformed(evt);
+            }
+        });
+        PanelFormulario.add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 390, 110, -1));
+
         panelFondo.add(PanelFormulario, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panelFondo, java.awt.BorderLayout.CENTER);
@@ -123,11 +135,18 @@ public class IniciarSesion extends javax.swing.JFrame {
         iniciarSesion();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+        RegistrarUsuario ventanaRegistro = new RegistrarUsuario();
+        ventanaRegistro.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFormulario;
     private javax.swing.JLabel Titulo;
     private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JButton btnRegistrarse;
     private javax.swing.JLabel labelContra;
     private javax.swing.JLabel labelUsuario;
     private javax.swing.JPanel panelFondo;

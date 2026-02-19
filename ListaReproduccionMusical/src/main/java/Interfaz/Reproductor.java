@@ -32,7 +32,7 @@ public class Reproductor extends JFrame {
     private final JLabel lblArtista;
 
     private Clip clip; // Objeto nativo de Java para reproducir audio
-    private Timer timerProgreso;
+    private final Timer timerProgreso;
 
     public Reproductor(Usuario usuarioActual) {
         this.usuarioActual = usuarioActual;
