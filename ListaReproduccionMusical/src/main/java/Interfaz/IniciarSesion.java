@@ -1,29 +1,112 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Interfaz;
 
 import Entidades.Usuario;
 import Mock.ListaUsuarios;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
  * @author Abraham Coronel
  */
-public class IniciarSesion extends javax.swing.JFrame {
+public class IniciarSesion extends JFrame {
 
     private final ListaUsuarios listaUsuarios;
 
+    private JTextField textfieldUsuario;
+    private JPasswordField passfieldContra;
+
     public IniciarSesion() {
-        initComponents();
-        configurarVentana();
         this.listaUsuarios = new ListaUsuarios();
+        configurarVentana();
+        inicializarComponentes();
     }
 
     private void configurarVentana() {
-        this.setLocationRelativeTo(null);
+        setTitle("Inicio de Sesión");
+        setSize(600, 800); 
+        setLocationRelativeTo(null); 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+    }
+
+    private void inicializarComponentes() {
+        Color colorFondo = new Color(15, 15, 15);
+        Color colorMorado = new Color(138, 43, 226);
+        Color colorAscua = new Color(226, 113, 43);
+        Font fuente = new Font("Honoka Mincho", Font.BOLD, 18);
+        Font fuenteTitulo = new Font("Honoka Mincho", Font.BOLD, 36);
+
+
+        JPanel panelFondo = new JPanel();
+        panelFondo.setBackground(colorFondo);
+        panelFondo.setLayout(null);
+
+        JLabel lblTitulo = new JLabel("Iniciar Sesión");
+        lblTitulo.setForeground(colorMorado);
+        lblTitulo.setFont(fuenteTitulo);
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitulo.setBounds(150, 120, 300, 50); // x, y, ancho, alto
+        panelFondo.add(lblTitulo);
+
+        JLabel labelUsuario = new JLabel("Ingresa tu usuario:");
+        labelUsuario.setForeground(colorAscua);
+        labelUsuario.setFont(fuente);
+        labelUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        labelUsuario.setBounds(150, 230, 300, 30);
+        panelFondo.add(labelUsuario);
+
+        textfieldUsuario = new JTextField();
+        textfieldUsuario.setBackground(new Color(30, 30, 30));
+        textfieldUsuario.setForeground(Color.WHITE);
+        textfieldUsuario.setFont(fuente);
+        textfieldUsuario.setHorizontalAlignment(JTextField.CENTER);
+        textfieldUsuario.setBounds(150, 270, 300, 40);
+        textfieldUsuario.setBorder(BorderFactory.createLineBorder(colorMorado, 1));
+        panelFondo.add(textfieldUsuario);
+
+        JLabel labelContra = new JLabel("Ingresa tu contraseña:");
+        labelContra.setForeground(colorAscua);
+        labelContra.setFont(fuente);
+        labelContra.setHorizontalAlignment(SwingConstants.CENTER);
+        labelContra.setBounds(150, 340, 300, 30);
+        panelFondo.add(labelContra);
+
+        passfieldContra = new JPasswordField();
+        passfieldContra.setBackground(new Color(30, 30, 30));
+        passfieldContra.setForeground(Color.WHITE);
+        passfieldContra.setFont(fuente);
+        passfieldContra.setHorizontalAlignment(JPasswordField.CENTER);
+        passfieldContra.setBounds(150, 380, 300, 40);
+        passfieldContra.setBorder(BorderFactory.createLineBorder(colorMorado, 1));
+        panelFondo.add(passfieldContra);
+
+        // --- BOTONES ---
+        JButton btnIniciarSesion = new JButton("Iniciar sesión");
+        btnIniciarSesion.setBackground(colorMorado);
+        btnIniciarSesion.setForeground(Color.WHITE);
+        btnIniciarSesion.setFont(fuente);
+        btnIniciarSesion.setFocusPainted(false);
+        btnIniciarSesion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnIniciarSesion.setBounds(200, 470, 200, 45);
+        btnIniciarSesion.addActionListener(e -> iniciarSesion());
+        panelFondo.add(btnIniciarSesion);
+
+        JButton btnRegistrarse = new JButton("Registrarse");
+        btnRegistrarse.setBackground(colorAscua);
+        btnRegistrarse.setForeground(Color.WHITE);
+        btnRegistrarse.setFont(fuente);
+        btnRegistrarse.setFocusPainted(false);
+        btnRegistrarse.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRegistrarse.setBounds(200, 540, 200, 45);
+        btnRegistrarse.addActionListener(e -> abrirRegistro());
+        panelFondo.add(btnRegistrarse);
+
+        add(panelFondo);
     }
 
     private void iniciarSesion() {
@@ -39,118 +122,13 @@ public class IniciarSesion extends javax.swing.JFrame {
             ventanaReproductor.setVisible(true);
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Erro: Usuario o contraseña incorrectos, ingreselos de nuevo");
+            JOptionPane.showMessageDialog(this, "Error: Usuario o contraseña incorrectos, ingrésalos de nuevo", "Credenciales Inválidas", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        panelFondo = new javax.swing.JPanel();
-        Titulo = new javax.swing.JLabel();
-        PanelFormulario = new javax.swing.JPanel();
-        labelUsuario = new javax.swing.JLabel();
-        textfieldUsuario = new javax.swing.JTextField();
-        labelContra = new javax.swing.JLabel();
-        passfieldContra = new javax.swing.JPasswordField();
-        btnIniciarSesion = new javax.swing.JButton();
-        btnRegistrarse = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 800));
-        setSize(new java.awt.Dimension(0, 0));
-
-        panelFondo.setBackground(new java.awt.Color(15, 15, 15));
-        panelFondo.setLayout(new java.awt.BorderLayout());
-
-        Titulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        Titulo.setForeground(new java.awt.Color(138, 43, 226));
-        Titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Titulo.setText("Iniciar Sesion");
-        panelFondo.add(Titulo, java.awt.BorderLayout.PAGE_START);
-
-        PanelFormulario.setOpaque(false);
-        PanelFormulario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        labelUsuario.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        labelUsuario.setForeground(new java.awt.Color(226, 113, 43));
-        labelUsuario.setText("Ingresa tu usuario:");
-        labelUsuario.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        PanelFormulario.add(labelUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 240, 90));
-
-        textfieldUsuario.setBackground(new java.awt.Color(153, 153, 153));
-        textfieldUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        textfieldUsuario.setForeground(new java.awt.Color(138, 43, 226));
-        textfieldUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textfieldUsuarioActionPerformed(evt);
-            }
-        });
-        PanelFormulario.add(textfieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 210, -1));
-
-        labelContra.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        labelContra.setForeground(new java.awt.Color(226, 113, 43));
-        labelContra.setText("Ingresa tu contraseña:");
-        PanelFormulario.add(labelContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 260, -1, -1));
-
-        passfieldContra.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        passfieldContra.setForeground(new java.awt.Color(138, 43, 226));
-        PanelFormulario.add(passfieldContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 210, -1));
-
-        btnIniciarSesion.setBackground(new java.awt.Color(153, 153, 153));
-        btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnIniciarSesion.setForeground(new java.awt.Color(138, 43, 226));
-        btnIniciarSesion.setText("Iniciar sesion");
-        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIniciarSesionActionPerformed(evt);
-            }
-        });
-        PanelFormulario.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, -1, -1));
-
-        btnRegistrarse.setBackground(new java.awt.Color(153, 153, 153));
-        btnRegistrarse.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnRegistrarse.setForeground(new java.awt.Color(138, 43, 226));
-        btnRegistrarse.setText("Registrarse");
-        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarseActionPerformed(evt);
-            }
-        });
-        PanelFormulario.add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 390, 110, -1));
-
-        panelFondo.add(PanelFormulario, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(panelFondo, java.awt.BorderLayout.CENTER);
-
-        setBounds(0, 0, 820, 617);
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void textfieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textfieldUsuarioActionPerformed
-
-    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        iniciarSesion();
-    }//GEN-LAST:event_btnIniciarSesionActionPerformed
-
-    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+    private void abrirRegistro() {
         RegistrarUsuario ventanaRegistro = new RegistrarUsuario();
         ventanaRegistro.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnRegistrarseActionPerformed
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel PanelFormulario;
-    private javax.swing.JLabel Titulo;
-    private javax.swing.JButton btnIniciarSesion;
-    private javax.swing.JButton btnRegistrarse;
-    private javax.swing.JLabel labelContra;
-    private javax.swing.JLabel labelUsuario;
-    private javax.swing.JPanel panelFondo;
-    private javax.swing.JPasswordField passfieldContra;
-    private javax.swing.JTextField textfieldUsuario;
-    // End of variables declaration//GEN-END:variables
+    }
 }

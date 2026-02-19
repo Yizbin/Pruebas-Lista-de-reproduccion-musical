@@ -14,6 +14,12 @@ import java.util.List;
  */
 public class SongLoader{
 
+    /**
+     * Explora una carpeta específica y carga las canciones contenidas en ella.
+     * (Nota: La implementación actual requiere lógica para leer el directorio).
+     * @param rutaCarpeta Ruta absoluta o relativa del directorio a explorar.
+     * @return Una lista de objetos Cancion encontrados en la carpeta.
+     */
     public static List<Cancion> cargar(String rutaCarpeta) {
         List<Cancion> lista = new ArrayList<>();
 

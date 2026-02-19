@@ -188,8 +188,8 @@ public class Reproductor extends JFrame {
 
         panelDerecho.add(scroll, BorderLayout.CENTER);
 
-        // PANEL PARA LOS BOTONES INFERIORES
-        JPanel panelBotonesDerecho = new JPanel(new GridLayout(2, 1, 10, 10));
+        // PANEL PARA LOS BOTONES INFERIORES (Cambiamos el GridLayout a 3 filas)
+        JPanel panelBotonesDerecho = new JPanel(new GridLayout(3, 1, 10, 10));
         panelBotonesDerecho.setBackground(new Color(15, 15, 15));
         panelBotonesDerecho.setBorder(new EmptyBorder(10, 0, 0, 0));
 
@@ -211,8 +211,22 @@ public class Reproductor extends JFrame {
         btnAgregarCancion.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnAgregarCancion.addActionListener(e -> agregarCancionArchivo());
 
+        // --- NUEVO --- BOTÓN 3: ELIMINAR CANCIoN (Rojo oscuro)
+        JButton btnEliminarCancion = new JButton("🗑 Eliminar Canción");
+        btnEliminarCancion.setFocusPainted(false);
+        btnEliminarCancion.setFont(new Font("Honoka Mincho", Font.BOLD, 14));
+        btnEliminarCancion.setForeground(Color.WHITE);
+        btnEliminarCancion.setBackground(new Color(178, 34, 34)); // Rojo Oscuro
+        btnEliminarCancion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnEliminarCancion.addActionListener(e -> eliminarCancionSeleccionada());
+
+        // Agregamos los 3 botones al panel
         panelBotonesDerecho.add(btnCrearLista);
         panelBotonesDerecho.add(btnAgregarCancion);
+        panelBotonesDerecho.add(btnEliminarCancion);
+
+        // Lo agregamos en la parte de abajo (SOUTH)
+        panelDerecho.add(panelBotonesDerecho, BorderLayout.SOUTH);
 
         // Lo agregamos en la parte de abajo (SOUTH)
         panelDerecho.add(panelBotonesDerecho, BorderLayout.SOUTH);
@@ -384,6 +398,33 @@ public class Reproductor extends JFrame {
                 int porcentaje = (int) ((posicionActual * 100) / longitudTotal);
                 progreso.setValue(porcentaje);
             }
+        }
+    }
+
+    private void eliminarCancionSeleccionada() {
+        int indexLista = comboListas.getSelectedIndex();
+        int indexCancion = lista.getSelectedIndex();
+
+        if (indexLista == -1 || indexCancion == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona una lista y la canción que deseas eliminar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que deseas eliminar esta canción de la lista?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            ListaReproduccion listaActiva = usuarioActual.getListaReproduccion().get(indexLista);
+            Entidades.Cancion cancionAEliminar = listaActiva.getListaCanciones().get(indexCancion);
+
+            listaActiva.eliminarCancion(cancionAEliminar);
+
+            actualizarListaVisual(listaActiva);
         }
     }
 }

@@ -17,14 +17,29 @@ public class ListaReproduccion {
 
     private List<Cancion> listaCanciones;
 
+    /**
+     * Constructor por defecto de la clase ListaReproduccion.
+     */
     public ListaReproduccion() {
     }
 
+    /**
+     * Crea una lista de reproducción recibiendo un nombre y una lista previa.
+     * (Nota: Inicializa la lista interna como un ArrayList vacío).
+     *
+     * @param nombreLista Nombre de la lista.
+     * @param listaCanciones Colección inicial de canciones.
+     */
     public ListaReproduccion(String nombreLista, List<Cancion> listaCanciones) {
         this.nombreLista = nombreLista;
         this.listaCanciones = new ArrayList<>();
     }
 
+    /**
+     * Crea una lista de reproducción vacía con el nombre especificado.
+     *
+     * @param nombreLista Nombre asignado a la nueva lista.
+     */
     public ListaReproduccion(String nombreLista) {
         this.nombreLista = nombreLista;
         this.listaCanciones = new ArrayList<>();
@@ -47,14 +62,29 @@ public class ListaReproduccion {
     }
 
     //Metodos
+    /**
+     * Agrega una nueva canción a la lista de reproducción.
+     *
+     * @param cancion Objeto Cancion a agregar.
+     */
     public void agregarCancion(Cancion cancion) {
         this.listaCanciones.add(cancion);
     }
 
+    /**
+     * Elimina una canción específica de la lista de reproducción.
+     *
+     * @param cancion Objeto Cancion a eliminar.
+     */
     public void eliminarCancion(Cancion cancion) {
         this.listaCanciones.remove(cancion);
     }
 
+    /**
+     * Obtiene el número total de canciones contenidas en la lista.
+     *
+     * @return La cantidad de canciones.
+     */
     public int getCantidadCanciones() {
         return this.listaCanciones.size();
     }

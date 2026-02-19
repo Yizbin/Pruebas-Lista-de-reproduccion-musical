@@ -14,6 +14,14 @@ public class Cancion {
     private long duracion;
     private byte[] caratula;
 
+    /**
+     * Constructor completo para inicializar una nueva cancion.
+     * @param archivo
+     * @param titulo  El nombre o titulo de la canción.
+     * @param artista El nombre del interprete o creador de la cancion.
+     * @param duracion La longitud de la cancion en milisegundos.
+     * @param caratula Arreglo de bytes que representa la imagen de portada.
+     */
     public Cancion(File archivo, String titulo, String artista, long duracion, byte[] caratula) {
         this.archivo = archivo;
         this.titulo = titulo;
